@@ -14,19 +14,18 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: "lanche_do_mrbroa_eh_bom_demais",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-
+// app.use(
+//   session({
+//     secret: "lanche_do_mrbroa_eh_bom_demais",
+//     resave: false,
+//     saveUninitialized: true,
+//   })
+// );
 
 app.get("/", function (req, res) {
     res.render("index.ejs", {});
-  });
+});
 
 app.listen("3000", function () {
     console.log("Conexão iniciada com sucesso!");
-  });
+});
