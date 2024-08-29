@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Email</th>
+            <th>Senha</th>
+            <th>Endereco</th>
+            <th>Telefone</th>
+        </tr>
+        <%Usuarios.forEach(function(usuario){%>
+        <tr>
+            <td><%=usuario.nome%></td>
+            <td><%=usuario.cpf%></td>
+            <td><%=usuario.email%></td>
+            <td><%=usuario.senha%></td>
+            <td><%=usuario.endereco%></td>
+            <td><%=usuario.telefone%></td>
+        </tr>
+        <%})%>
+    </table>
+</body>
+</html>
