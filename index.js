@@ -12,12 +12,54 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+    session({
+      secret: "e_us_guri",
+      resave: false,
+      saveUninitialized: true,
+    })
+  );
 
 app.get("/", function (req, res) {
+    res.render("login.ejs", {});
+});
+
+app.get("/cadastro", function (req, res) {
     res.render("index.ejs", {});
 });
 
-app.post('/', function(req, res){
+app.get("/usuarios", function (req, res) {
+    try {
+        const id_usuario = req.session.id_usuario;
+
+        if(!id_usuario){
+            return res.redirect("/");
+        }
+
+        Usuario.find({}).then(function(docs){
+            res.render('usuarios.ejs', {Usuarios: docs});
+        });
+
+    }catch (error) {
+        res.status(500).send("Ocorreu um erro: " + error);
+     }
+});
+
+app.get("/sair", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Erro ao finalizar a sessão:", err);
+        return res
+          .status(500)
+          .send(
+            `<script>alert("Ocorreu um erro ao sair da conta."); window.history.back();</script>`
+          );
+      }
+      res.redirect("/");
+    });
+});
+
+app.post('/cadastro', function(req, res){
     var usuario = new Usuario({
         nome: req.body.nome,
         cpf: req.body.cpf,
@@ -36,10 +78,35 @@ app.post('/', function(req, res){
     });
 });
 
-app.get("/usuarios", function (req, res) {
-    Usuario.find({}).then(function(docs){
-        res.render('usuarios.ejs', {Usuarios: docs});
-    });
+app.post("/", async (req, res) => {
+    const { email, senha } = req.body;
+
+    try {
+      const usuario = await Usuario.findOne({ email });
+
+      if (!usuario) {
+        return res.send(
+          `<script>alert("Cadastro não encontrado."); window.history.back();</script>`
+        );
+      }
+
+      if (senha === usuario.senha) {
+        req.session.id_usuario = usuario._id;
+        req.session.email = usuario.email;
+        return res.redirect("/usuarios");
+      } else {
+        return res.send(
+          `<script>alert("E-mail ou senha incorretos."); window.history.back();</script>`
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao consultar o banco de dados: ", error);
+      return res
+        .status(500)
+        .send(
+          `<script>alert("Ocorreu um erro ao consultar o banco de dados."); window.history.back();</script>`
+        );
+    }
 });
 
 app.listen("3000", function () {

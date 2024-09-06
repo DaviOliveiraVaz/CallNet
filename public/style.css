@@ -109,6 +109,19 @@ form .input-group.button-group input {
     font-size: 16px;
 }
 
+form .input-group.button-group.entrar input {
+    width: 48%;
+    height: 47px;
+    background: #1800d0;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 90px;
+}
+
 form .input-group.button-group input[type="reset"] {
     background: #ff6161;
 }
