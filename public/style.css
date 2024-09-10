@@ -148,3 +148,26 @@ form .input-group.button-group input:hover {
         padding: 0;
     }
 }
+
+a{
+    text-decoration: none;
+    color: #464646;
+}
+
+a:hover{
+    color: white;
+}
+
+form .input-group.button-group.entrar input:hover{
+    background-color: #12009a;
+    color: white;
+}
+
+form .input-group.button-group input:hover{
+    background: #12009a;
+    color: white;
+}
+
+form .input-group.button-group input[type="reset"]:hover {
+    background: #f73333;
+}

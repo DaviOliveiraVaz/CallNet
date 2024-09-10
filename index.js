@@ -5,6 +5,7 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+const saltRounds = 10;
 const conexao = require("./config/database");
 const Usuario = require("./model/Usuario");
 
@@ -60,53 +61,59 @@ app.get("/sair", (req, res) => {
 });
 
 app.post('/cadastro', function(req, res){
-    var usuario = new Usuario({
-        nome: req.body.nome,
-        cpf: req.body.cpf,
-        email: req.body.email,
-        senha: req.body.senha,
-        endereco: req.body.endereco,
-        telefone: req.body.telefone
-    });
+  bcrypt.hash(req.body.senha, saltRounds, function(err, hash) {
+      if (err) {
+          return res.send("Erro ao criptografar a senha: " + err);
+      }
 
-    usuario.save(function(err, docs){
-        if(err){
-            res.send("Deu o seguinte erro ao salvar a empresa: " + err);
-        } else{
-            res.redirect("/usuarios");
-        }
-    });
+      var usuario = new Usuario({
+          nome: req.body.nome,
+          cpf: req.body.cpf,
+          email: req.body.email,
+          senha: hash,
+          endereco: req.body.endereco,
+          telefone: req.body.telefone
+      });
+
+      usuario.save(function(err, docs){
+          if(err){
+              res.send("Erro ao salvar o usuário: " + err);
+          } else {
+              res.redirect("/usuarios");
+          }
+      });
+  });
 });
 
 app.post("/", async (req, res) => {
-    const { email, senha } = req.body;
+  const { email, senha } = req.body;
 
-    try {
-      const usuario = await Usuario.findOne({ email });
+  try {
+    const usuario = await Usuario.findOne({ email });
 
-      if (!usuario) {
-        return res.send(
-          `<script>alert("Cadastro não encontrado."); window.history.back();</script>`
-        );
-      }
-
-      if (senha === usuario.senha) {
-        req.session.id_usuario = usuario._id;
-        req.session.email = usuario.email;
-        return res.redirect("/usuarios");
-      } else {
-        return res.send(
-          `<script>alert("E-mail ou senha incorretos."); window.history.back();</script>`
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao consultar o banco de dados: ", error);
-      return res
-        .status(500)
-        .send(
-          `<script>alert("Ocorreu um erro ao consultar o banco de dados."); window.history.back();</script>`
-        );
+    if (!usuario) {
+      return res.send(
+        `<script>alert("Cadastro não encontrado."); window.history.back();</script>`
+      );
     }
+
+    const match = await bcrypt.compare(senha, usuario.senha);
+
+    if (match) {
+      req.session.id_usuario = usuario._id;
+      req.session.email = usuario.email;
+      return res.redirect("/usuarios");
+    } else {
+      return res.send(
+        `<script>alert("E-mail ou senha incorretos."); window.history.back();</script>`
+      );
+    }
+  } catch (error) {
+    console.error("Erro ao consultar o banco de dados: ", error);
+    return res.status(500).send(
+      `<script>alert("Ocorreu um erro ao consultar o banco de dados."); window.history.back();</script>`
+    );
+  }
 });
 
 app.listen("3000", function () {
