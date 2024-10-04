@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="">
+    <title>Listagem de Chamados</title>
+</head>
+
+<body>
+    <h1> CHAMADOS</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Titulo</th>
+            <th>Descricao</th>
+            <th>Prioridade</th>
+            <th>Tipo</th>
+            <th>Local</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Observacao</th>
+            <th>Status</th>
+            <th>Data</th>
+        </tr>
+        <%Chamados.forEach(function(chamado){%>
+        <tr>
+            <td><%=chamado.id%></td>
+            <td><%=chamado.titulo%></td>
+            <td><%=chamado.descricao%></td>
+            <td><%=chamado.prioridade%></td>
+            <td><%=chamado.tipo%></td>
+            <td><%=chamado.local%></td>
+            <td><%=chamado.nome%></td>
+            <td><%=chamado.email%></td>
+            <td><%=chamado.observacao%></td>
+            <td><%=chamado.status%></td>
+            <td><%=chamado.data%></td>
+        </tr>
+        <%})%>
+
+    </table>
+</body>
+
+</html>
