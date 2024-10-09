@@ -105,6 +105,16 @@ app.get("/sair", (req, res) => {
   });
 });
 
+app.get('/deletar/:id', function(req, res){
+  Chamado.findByIdAndDelete(req.params.id, function(err, docs){
+      if(err){
+          res.send("Aconteceu o seguinte erro: " + err);
+      } else{
+          res.redirect("/listar-chamados"); 
+      };
+  });
+});
+
 app.post("/chamados", async function (req, res) {
   try {
     const id_usuario = req.session.id_usuario;

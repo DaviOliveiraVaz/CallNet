@@ -10,34 +10,31 @@
 </head>
 
 <body>
+    <header>
+        <a href="/listar-chamados">CHAMADOS</a> <a href="/chamados">CRIAR CHAMADO</a> <a href="/clientes">CADASTRAR CLIENTE</a> <a href="/cadastro">CADASTRAR FUNCIONARIO</a>
+    </header>
     <h1> CHAMADOS</h1>
     <table>
         <tr>
             <th>ID</th>
             <th>Titulo</th>
-            <th>Descricao</th>
             <th>Prioridade</th>
             <th>Tipo</th>
-            <th>Local</th>
             <th>Nome</th>
-            <th>Email</th>
-            <th>Observacao</th>
             <th>Status</th>
             <th>Data</th>
+            <th>Opções</th>
         </tr>
         <%Chamados.forEach(function(chamado){%>
         <tr>
             <td><%=chamado.id%></td>
             <td><%=chamado.titulo%></td>
-            <td><%=chamado.descricao%></td>
             <td><%=chamado.prioridade%></td>
             <td><%=chamado.tipo%></td>
-            <td><%=chamado.local%></td>
             <td><%=chamado.nome%></td>
-            <td><%=chamado.email%></td>
-            <td><%=chamado.observacao%></td>
             <td><%=chamado.status%></td>
             <td><%=chamado.data%></td>
+            <td><a href="/deletar/<%=chamado._id%>">Excluir</a></td><td>Editar</td>
         </tr>
         <%})%>
 
