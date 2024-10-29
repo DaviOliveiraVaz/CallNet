@@ -91,6 +91,54 @@ app.get("/listar-chamados", async function (req, res) {
   }
 });
 
+app.get("/listar-clientes", async function (req, res) {
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
+    Cliente.find({}).then(function(docs){
+      res.render('listar-clientes.ejs', {Clientes: docs});
+    });
+
+  } catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
+});
+
+app.get("/listar-funcionarios", async function (req, res) {
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
+    Usuario.find({}).then(function(docs){
+      res.render('listar-funcionarios.ejs', {Usuarios: docs});
+    });
+
+  } catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
+});
+
+app.get("/editar-cliente/:id", function(req, res){
+  Cliente.findById(req.params.id).then(function(docs){
+      res.render("editar-cliente.ejs", { Cliente : docs});
+  });
+});
+
+app.get("/editar-funcionario/:id", function(req, res){
+  Usuario.findById(req.params.id).then(function(docs){
+      res.render("editar-funcionario.ejs", { Usuario : docs});
+  });
+});
+
 app.get("/sair", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -110,7 +158,27 @@ app.get('/deletar/:id', function(req, res){
       if(err){
           res.send("Aconteceu o seguinte erro: " + err);
       } else{
-          res.redirect("/listar-chamados"); 
+          res.redirect("/listar-chamados");
+      };
+  });
+});
+
+app.get('/deletar-cliente/:id', function(req, res){
+  Cliente.findByIdAndDelete(req.params.id, function(err, docs){
+      if(err){
+          res.send("Aconteceu o seguinte erro: " + err);
+      } else{
+          res.redirect("/listar-clientes");
+      };
+  });
+});
+
+app.get('/deletar-funcionario/:id', function(req, res){
+  Usuario.findByIdAndDelete(req.params.id, function(err, docs){
+      if(err){
+          res.send("Aconteceu o seguinte erro: " + err);
+      } else{
+          res.redirect("/listar-funcionarios");
       };
   });
 });
@@ -219,6 +287,66 @@ app.post('/clientes', function(req, res){
       `<script>alert("Ocorreu um erro."); window.history.back();</script>`
     );
   }
+});
+
+app.post("/editarChamadoObservacao/:id", async function (req, res) {
+  try {
+    const chamadoId = req.params.id;
+    const novaObservacao = req.body.observacao;
+
+    if (!novaObservacao) {
+      return res.status(400).send("Observação não pode estar vazia.");
+    }
+
+    const chamado = await Chamado.findByIdAndUpdate(
+      chamadoId,
+      { observacao: novaObservacao },
+      { new: true }
+    );
+
+    if (!chamado) {
+      return res.status(404).send("Chamado não encontrado.");
+    }
+
+    res.status(200).send("Observação atualizada com sucesso.");
+  } catch (error) {
+    console.error("Erro ao atualizar a observação:", error);
+    res.status(500).send("Erro ao atualizar a observação.");
+  }
+});
+
+app.post('/editar-cliente/:id', function(req, res){
+  Cliente.findByIdAndUpdate(req.params.id,
+       {
+          nome: req.body.nome,
+          cpf: req.body.cpf,
+          email: req.body.email,
+          endereco: req.body.endereco,
+          telefone: req.body.telefone
+       },
+      function(err, docs){
+          if(err){
+              res.send("Aconteceu o seguinte erro: " + err);
+          } else{
+              res.redirect("/listar-clientes");
+          }});
+});
+
+app.post('/editar-funcionario/:id', function(req, res){
+  Usuario.findByIdAndUpdate(req.params.id,
+       {
+          nome: req.body.nome,
+          cpf: req.body.cpf,
+          email: req.body.email,
+          endereco: req.body.endereco,
+          telefone: req.body.telefone
+       },
+      function(err, docs){
+          if(err){
+              res.send("Aconteceu o seguinte erro: " + err);
+          } else{
+              res.redirect("/listar-funcionarios");
+          }});
 });
 
 app.post("/", async (req, res) => {

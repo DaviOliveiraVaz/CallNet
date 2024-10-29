@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Clientes</title>
+</head>
+
+<body>
+    <header>
+        <a href="/listar-chamados">CHAMADOS</a>
+        <a href="/chamados">CRIAR CHAMADO</a>
+        <a href="/clientes">CADASTRAR CLIENTE</a>
+        <a href="/cadastro">CADASTRAR FUNCIONARIO</a>
+        <a href="/listar-clientes">CLIENTES</a>
+        <a href="/listar-funcionarios">FUNCIONARIOS</a>
+    </header>
+    <h1>CLIENTES</h1>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Email</th>
+            <th>Endereço</th>
+            <th>Telefone</th>
+            <th>Opções</th>
+        </tr>
+        <%Clientes.forEach(function(cliente){%>
+        <tr>
+            <td><%=cliente.nome%></td>
+            <td><%=cliente.cpf%></td>
+            <td><%=cliente.email%></td>
+            <td><%=cliente.endereco%></td>
+            <td><%=cliente.telefone%></td>
+            <td><a href="/editar-cliente/<%=cliente._id%>">Editar</a></td>
+            <td><a href="/deletar-cliente/<%=cliente._id%>" onclick="return confirm('Tem certeza que deseja excluir o cliente?')">Excluir</a></td>
+        </tr>
+        <%})%>
+    </table>
+</body>
+
+</html>

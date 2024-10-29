@@ -5,15 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="">
     <title>Listagem de Chamados</title>
 </head>
 
 <body>
     <header>
-        <a href="/listar-chamados">CHAMADOS</a> <a href="/chamados">CRIAR CHAMADO</a> <a href="/clientes">CADASTRAR CLIENTE</a> <a href="/cadastro">CADASTRAR FUNCIONARIO</a>
+        <a href="/listar-chamados">CHAMADOS</a>
+        <a href="/chamados">CRIAR CHAMADO</a>
+        <a href="/clientes">CADASTRAR CLIENTE</a>
+        <a href="/cadastro">CADASTRAR FUNCIONARIO</a>
+        <a href="/listar-clientes">CLIENTES</a>
+        <a href="/listar-funcionarios">FUNCIONARIOS</a>
     </header>
-    <h1> CHAMADOS</h1>
+    <h1>CHAMADOS</h1>
     <table>
         <tr>
             <th>ID</th>
@@ -23,6 +27,7 @@
             <th>Nome</th>
             <th>Status</th>
             <th>Data</th>
+            <th>Observação</th>
             <th>Opções</th>
         </tr>
         <%Chamados.forEach(function(chamado){%>
@@ -34,11 +39,41 @@
             <td><%=chamado.nome%></td>
             <td><%=chamado.status%></td>
             <td><%=chamado.data%></td>
-            <td><a href="/deletar/<%=chamado._id%>">Excluir</a></td><td>Editar</td>
+            <td><%=chamado.observacao%></td>
+            <td>
+                <a href="#" onclick="editarObservacao('<%=chamado._id%>', '<%=chamado.observacao%>')">Editar</a>
+            </td>
+            <td><a href="/deletar/<%=chamado._id%>" onclick="return confirm('Tem certeza que deseja excluir o chamado?')">Excluir</a></td>
         </tr>
         <%})%>
-
     </table>
+
+    <script>
+        function editarObservacao(chamadoId, observacaoAtual) {
+            const novaObservacao = prompt("Editar Observação", observacaoAtual);
+            if (novaObservacao !== null) {
+                fetch(`/editarChamadoObservacao/${chamadoId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ observacao: novaObservacao }),
+                })
+                .then((response) => {
+                    if (response.ok) {
+                        alert("Observação atualizada com sucesso!");
+                        location.reload();
+                    } else {
+                        alert("Erro ao atualizar a observação.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Erro ao atualizar:", error);
+                    alert("Erro ao atualizar a observação.");
+                });
+            }
+        }
+    </script>
 </body>
 
 </html>
