@@ -366,7 +366,7 @@ app.post("/", async (req, res) => {
     if (match) {
       req.session.id_usuario = usuario._id;
       req.session.email = usuario.email;
-      return res.redirect("/chamados");
+      return res.redirect("/listar-chamados");
     } else {
       return res.send(
         `<script>alert("E-mail ou senha incorretos."); window.history.back();</script>`
