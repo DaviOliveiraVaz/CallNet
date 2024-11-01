@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,40 +7,58 @@
     <link rel="stylesheet" href="clientes.css">
     <title>Listagem de Clientes</title>
 </head>
-
 <body>
     <header>
-        <ul>
-            <li><a href="/listar-chamados">CHAMADOS</a></li>
-            <li><a href="/chamados">CRIAR CHAMADO</a></li>
-            <li><a href="/clientes">CADASTRAR CLIENTE</a></li>
-            <li><a href="/cadastro">CADASTRAR FUNCIONARIO</a></li>
-            <li><a href="/listar-clientes">CLIENTES</a></li>
-            <li><a href="/listar-funcionarios">FUNCIONARIOS</a></li>
-          </ul>
-        </header>
-    <h1>CLIENTES</h1>
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Email</th>
-            <th>Endereço</th>
-            <th>Telefone</th>
-            <th>Opções</th>
-        </tr>
-        <%Clientes.forEach(function(cliente){%>
-        <tr>
-            <td><%=cliente.nome%></td>
-            <td><%=cliente.cpf%></td>
-            <td><%=cliente.email%></td>
-            <td><%=cliente.endereco%></td>
-            <td><%=cliente.telefone%></td>
-            <td><a href="/editar-cliente/<%=cliente._id%>">Editar</a></td>
-            <td><a href="/deletar-cliente/<%=cliente._id%>" onclick="return confirm('Tem certeza que deseja excluir o cliente?')">Excluir</a></td>
-        </tr>
-        <%})%>
-    </table>
+        <div class="top-header">
+            <a href="/sair" class="logout"><img src="sair-icon.png" alt="" width="30px"></a>
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <nav class="sidebar" id="sidebar">
+            <ul>
+                <li><img src="chamados-icon.png" alt="Ícone de Chamados" width="30px"><a href="/listar-chamados"><span class="menu-text">CHAMADOS</span></a></li>
+                <li><img src="criar_chamado-icon.png" alt="Ícone de Criar Chamado" width="30px"><a href="/chamados"><span class="menu-text">CRIAR CHAMADO</span></a></li>
+                <li><img src="cadastrar-icon.png" alt="Ícone de Cadastrar Cliente" width="30px"><a href="/clientes"><span class="menu-text">CADASTRAR CLIENTE</span></a></li>
+                <li><img src="cadastrar-icon.png" alt="Ícone de Cadastrar Funcionário" width="30px"><a href="/cadastro"><span class="menu-text">CADASTRAR FUNCIONARIO</span></a></li>
+                <li><img src="cadastrados-icon.png" alt="Ícone de Clientes" width="30px"><a href="/listar-clientes"><span class="menu-text">CLIENTES</span></a></li>
+                <li><img src="cadastrados-icon.png" alt="Ícone de Funcionários" width="30px"><a href="/listar-funcionarios"><span class="menu-text">FUNCIONARIOS</span></a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="content">
+        <h1>CLIENTES</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Email</th>
+                <th>Endereço</th>
+                <th>Telefone</th>
+                <th>Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%Clientes.forEach(function(cliente){%>
+            <tr>
+                <td><%=cliente.nome%></td>
+                <td><%=cliente.cpf%></td>
+                <td><%=cliente.email%></td>
+                <td><%=cliente.endereco%></td>
+                <td><%=cliente.telefone%></td>
+                <td>
+                    <a href="/editar-cliente/<%=cliente._id%>" class="btn-edit"><img src="editar-icon.png" alt="" width="30px"></a>
+                    <a href="/deletar-cliente/<%=cliente._id%>" onclick="return confirm('Tem certeza que deseja excluir o cliente?')" class="btn-delete"><img src="deletar-icon.png" alt="" width="30px"></a>
+                </td>
+            </tr>
+            <%})%>
+        </tbody>
+        </table>
+    </div>
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
 </body>
-
 </html>
