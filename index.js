@@ -10,6 +10,7 @@ const conexao = require("./config/database");
 const Usuario = require("./model/Usuario");
 const Chamado = require("./model/Chamado");
 const Cliente = require("./model/Cliente");
+require('dotenv').config();
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,7 +18,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: "e_us_guri",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })

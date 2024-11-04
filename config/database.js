@@ -1,9 +1,10 @@
-const conexao = require("mongoose");
+require('dotenv').config();
 
-const uri =
-    "mongodb+srv://Davi_Vaz:19122541@callnet.sixln.mongodb.net/?retryWrites=true&w=majority&appName=CallNet";
+const mongoose = require("mongoose");
 
-conexao.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+const uri = process.env.MONGODB_URI;
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("Conectado ao MongoDB com sucesso!");
     })
@@ -11,4 +12,4 @@ conexao.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
         console.error("Erro ao conectar ao MongoDB:", err);
     });
 
-module.exports = conexao;
+module.exports = mongoose;
