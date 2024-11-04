@@ -10,9 +10,9 @@
 <body>
     <header>
         <div class="top-header">
-            <a href="/sair" class="logout"><img src="sair-icon.png" alt="" width="30px"></a>
+            <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+            <a href="/sair" class="logout"><img src="sair-icon.png" alt="" width="28px" onclick="return confirm('Tem certeza que deseja sair?')"></a>
         </div>
-        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
         <nav class="sidebar" id="sidebar">
             <ul>
                 <li><img src="chamados-icon.png" alt="Ícone de Chamados" width="30px"><a href="/listar-chamados"><span class="menu-text">CHAMADOS</span></a></li>
@@ -57,7 +57,9 @@
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
+            const content = document.querySelector('.content');
             sidebar.classList.toggle('active');
+            content.classList.toggle('active');
         }
     </script>
 </body>

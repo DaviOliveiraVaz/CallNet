@@ -8,15 +8,24 @@
 </head>
 <body>
   <header>
-    <ul>
-        <li><a href="/listar-chamados">CHAMADOS</a></li>
-        <li><a href="/chamados">CRIAR CHAMADO</a></li>
-        <li><a href="/clientes">CADASTRAR CLIENTE</a></li>
-        <li><a href="/cadastro">CADASTRAR FUNCIONARIO</a></li>
-        <li><a href="/listar-clientes">CLIENTES</a></li>
-        <li><a href="/listar-funcionarios">FUNCIONARIOS</a></li>
-      </ul>
-    </header>
+    <div class="top-header">
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <a href="/sair" class="logout"><img src="sair-icon.png" alt="" width="28px" onclick="return confirm('Tem certeza que deseja sair?')"></a>
+    </div>
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><img src="chamados-icon.png" alt="Ícone de Chamados" width="30px"><a href="/listar-chamados"><span class="menu-text">CHAMADOS</span></a></li>
+            <li><img src="criar_chamado-icon.png" alt="Ícone de Criar Chamado" width="30px"><a href="/chamados"><span class="menu-text">CRIAR CHAMADO</span></a></li>
+            <li><img src="cadastrar-icon.png" alt="Ícone de Cadastrar Cliente" width="30px"><a href="/clientes"><span class="menu-text">CADASTRAR CLIENTE</span></a></li>
+            <li><img src="cadastrar-icon.png" alt="Ícone de Cadastrar Funcionário" width="30px"><a href="/cadastro"><span class="menu-text">CADASTRAR FUNCIONARIO</span></a></li>
+            <li><img src="cadastrados-icon.png" alt="Ícone de Clientes" width="30px"><a href="/listar-clientes"><span class="menu-text">CLIENTES</span></a></li>
+            <li><img src="cadastrados-icon.png" alt="Ícone de Funcionários" width="30px"><a href="/listar-funcionarios"><span class="menu-text">FUNCIONARIOS</span></a></li>
+        </ul>
+    </nav>
+</header>
+<div class="content">
+
+
   <main>
     <h2>CADASTRE SEU CHAMADO</h2>
     <form method="post" action="/chamados">
@@ -92,7 +101,7 @@
       <input type="submit" value="Enviar">
     </form>
   </main>
-
+</div>
   <script>
     const clientes = <%- JSON.stringify(cliente) %>;
 
@@ -142,6 +151,13 @@
         document.getElementById('local-hidden').value = clienteSelecionado.endereco;
       }
     });
+
+    function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.querySelector('.content');
+            sidebar.classList.toggle('active');
+            content.classList.toggle('active');
+        }
   </script>
 </body>
 </html>

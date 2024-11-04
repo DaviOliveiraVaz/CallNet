@@ -23,17 +23,12 @@
   color: white;
   text-decoration: none;
   font-weight: bold;
-  padding: 8px 12px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
-  margin-left: 1450px;
 }
 
 .menu-icon {
   font-size: 30px;
-  position: absolute;
-  top: 15px;
-  left: 12px;
   cursor: pointer;
   z-index: 4;
   color: #ddd;
@@ -99,8 +94,8 @@
   transition: margin-left 0.3s ease;
 }
 
-.sidebar.active ~ .content {
-  margin-left: 220px;
+.content.active {
+  margin-left: 200px;
 }
 
 h1 {
@@ -157,14 +152,7 @@ table tbody tr:hover {
 }
 
 @media (max-width: 768px) {
-  .content {
-      margin-left: 0;
-  }
   .top-header {
       padding: 0 10px;
-  }
-  .logout {
-      margin-right: 10px;
-      padding: 6px 10px;
   }
 }
