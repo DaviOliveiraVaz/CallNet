@@ -124,7 +124,7 @@ table tbody tr:hover {
   background-color: #e0e0e0;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit, .btn-delete, .btn-view {
   padding: 5px 10px;
   border-radius: 4px;
   text-decoration: none;
@@ -143,12 +143,22 @@ table tbody tr:hover {
 
 }
 
+.btn-view {
+  background-color: rgb(0, 83, 0);
+  padding-top: 20px;
+
+}
+
 .btn-edit:hover {
   background-color: #531254;
 }
 
 .btn-delete:hover {
   background-color: #FF4500;
+}
+
+.btn-view:hover {
+  background-color: rgb(1, 111, 1);
 }
 
 @media (max-width: 768px) {

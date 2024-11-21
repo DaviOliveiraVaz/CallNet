@@ -46,8 +46,18 @@
                     <td><%= usuario.endereco %></td>
                     <td><%= usuario.telefone %></td>
                     <td>
-                        <a href="/editar-funcionario/<%= usuario._id %>" class="btn-edit"><img src="editar-icon.png" alt="" width="30px"></a>
-                        <a href="/deletar-funcionario/<%= usuario._id %>" onclick="return confirm('Tem certeza que deseja excluir o funcionário?')" class="btn-delete"><img src="deletar-icon.png" alt="" width="30px"></a>
+                        <a href="/editar-funcionario/<%= usuario._id %>" class="btn-edit">
+                            <img src="editar-icon.png" alt="Editar" width="30px">
+                        </a>
+                        <% if (usuarioLogado.permissao === "1") { %>
+                            <a href="/deletar-funcionario/<%= usuario._id %>" onclick="return confirm('Tem certeza que deseja excluir o funcionário?')" class="btn-delete">
+                                <img src="deletar-icon.png" alt="Deletar" width="30px">
+                            </a>
+                        <% } else if (usuarioLogado.permissao === "2") { %>
+                            <a href="" onclick="return confirm('Dados do funcionário: ')" class="btn-view">
+                                <img src="view-icon.png" alt="Visualizar" width="30px">
+                            </a>
+                        <% } %>
                     </td>
                 </tr>
                 <% }) %>

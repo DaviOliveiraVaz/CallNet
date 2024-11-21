@@ -8,6 +8,11 @@ const UsuarioSchema = new Schema({
   senha:     { type: String, required: true },
   endereco:  { type: String, required: true },
   telefone:  { type: String, required: true },
+  permissao: {
+    type: String,
+    required: true,
+    default: "2",
+  },
 });
 
 module.exports = model("Usuario", UsuarioSchema, "usuarios");

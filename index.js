@@ -110,6 +110,24 @@ app.get("/listar-clientes", async function (req, res) {
   }
 });
 
+// app.get("/listar-funcionarios", async function (req, res) {
+//   try {
+//     const id_usuario = req.session.id_usuario;
+
+//     if (!id_usuario) {
+//       return res.redirect("/");
+//     }
+
+//     Usuario.find({}).then(function(docs){
+//       res.render('listar-funcionarios.ejs', {Usuarios: docs});
+//     });
+
+//   } catch (error) {
+//     console.error("Erro: ", error);
+//     res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+//   }
+// });
+
 app.get("/listar-funcionarios", async function (req, res) {
   try {
     const id_usuario = req.session.id_usuario;
@@ -118,15 +136,21 @@ app.get("/listar-funcionarios", async function (req, res) {
       return res.redirect("/");
     }
 
-    Usuario.find({}).then(function(docs){
-      res.render('listar-funcionarios.ejs', {Usuarios: docs});
-    });
+    const usuarioLogado = await Usuario.findById(id_usuario);
 
+    if (!usuarioLogado) {
+      return res.redirect("/");
+    }
+
+    Usuario.find({}).then(function (docs) {
+      res.render("listar-funcionarios.ejs", { Usuarios: docs, usuarioLogado });
+    });
   } catch (error) {
     console.error("Erro: ", error);
-    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+    res.status(500).send("Ocorreu um erro ao carregar os funcionários.");
   }
 });
+
 
 app.get("/editar-cliente/:id", function(req, res){
   Cliente.findById(req.params.id).then(function(docs){
