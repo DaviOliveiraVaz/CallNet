@@ -54,8 +54,13 @@
             <td><%=chamado.data%></td>
             <td><%=chamado.observacao%></td>
             <td>
-                <a href="#" onclick="editarObservacao('<%=chamado._id%>', '<%=chamado.observacao%>')" class="btn-edit"><img src="editar-icon.png" alt="" width="30px"></a>
-                <a href="/deletar/<%=chamado._id%>" onclick="return confirm('Tem certeza que deseja excluir o chamado?')" class="btn-delete"><img src="deletar-icon.png" alt="" width="30px"></a>
+                <% if (usuarioLogado.permissao === "2") { %>
+                    <a href="#" onclick="editarObservacao('<%=chamado._id%>', '<%=chamado.observacao%>')" class="btn-edit"><img src="editar-icon.png" alt="" width="30px"></a>
+                    <a href="/deletar/<%=chamado._id%>" onclick="return confirm('Tem certeza que deseja excluir o chamado?')" class="btn-delete"><img src="deletar-icon.png" alt="" width="30px"></a>
+                <% } else if (usuarioLogado.permissao === "1") { %>
+                    <a href="" onclick="return confirm('Tem certeza que deseja aceitar o chamado?')" class="btn-edit"><img src="aceitar-icon.png" alt="" width="30px"></a>
+                    <a href="" onclick="return confirm('Tem certeza que deseja recusar o chamado?')" class="btn-delete"><img src="recusar-icon.png" alt="" width="30px"></a>
+                <% } %>
             </td>
         </tr>
         <%})%>

@@ -24,6 +24,15 @@
             </ul>
         </nav>
     </header>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2>Dados do Funcionário</h2>
+            <p id="employee-data"></p>
+        </div>
+    </div>
+
     <div class="content">
         <h1>FUNCIONÁRIOS</h1>
         <table>
@@ -54,7 +63,13 @@
                                 <img src="deletar-icon.png" alt="Deletar" width="30px">
                             </a>
                         <% } else if (usuarioLogado.permissao === "2") { %>
-                            <a href="" onclick="return confirm('Dados do funcionário: ')" class="btn-view">
+                            <a href="#" onclick="openModal({
+                                nome: '<%= usuario.nome %>',
+                                cpf: '<%= usuario.cpf %>',
+                                email: '<%= usuario.email %>',
+                                endereco: '<%= usuario.endereco %>',
+                                telefone: '<%= usuario.telefone %>'
+                            }); return false;" class="btn-delete">
                                 <img src="view-icon.png" alt="Visualizar" width="30px">
                             </a>
                         <% } %>
@@ -71,6 +86,21 @@
             sidebar.classList.toggle('active');
             content.classList.toggle('active');
         }
+
+        function openModal(employee) {
+        document.getElementById('employee-data').innerText = `
+            Nome: ${employee.nome}
+            CPF: ${employee.cpf}
+            Email: ${employee.email}
+            Endereço: ${employee.endereco}
+            Telefone: ${employee.telefone}
+        `;
+        document.getElementById('modal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
     </script>
 </body>
 </html>

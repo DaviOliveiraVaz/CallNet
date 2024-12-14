@@ -52,7 +52,19 @@ app.get("/chamados", async function (req, res) {
 });
 
 app.get("/clientes", function (req, res) {
-  res.render("clientes.ejs", {});
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
+    res.render("clientes.ejs", {});
+
+  } catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
 });
 
 app.get("/clientes/:cpf", async function (req, res) {
@@ -68,6 +80,7 @@ app.get("/clientes/:cpf", async function (req, res) {
       email: cliente.email,
       endereco: cliente.endereco,
     });
+
   } catch (error) {
     console.error("Erro ao buscar cliente: ", error);
     res.status(500).json({ error: "Ocorreu um erro ao buscar o cliente" });
@@ -82,8 +95,10 @@ app.get("/listar-chamados", async function (req, res) {
       return res.redirect("/");
     }
 
+    const usuarioLogado = await Usuario.findById(id_usuario);
+
     Chamado.find({}).then(function(docs){
-      res.render('listar-chamados.ejs', {Chamados: docs});
+      res.render('listar-chamados.ejs', {Chamados: docs, usuarioLogado});
     });
 
   } catch (error) {
@@ -110,24 +125,6 @@ app.get("/listar-clientes", async function (req, res) {
   }
 });
 
-// app.get("/listar-funcionarios", async function (req, res) {
-//   try {
-//     const id_usuario = req.session.id_usuario;
-
-//     if (!id_usuario) {
-//       return res.redirect("/");
-//     }
-
-//     Usuario.find({}).then(function(docs){
-//       res.render('listar-funcionarios.ejs', {Usuarios: docs});
-//     });
-
-//   } catch (error) {
-//     console.error("Erro: ", error);
-//     res.status(500).send("Ocorreu um erro ao carregar os chamados.");
-//   }
-// });
-
 app.get("/listar-funcionarios", async function (req, res) {
   try {
     const id_usuario = req.session.id_usuario;
@@ -151,17 +148,40 @@ app.get("/listar-funcionarios", async function (req, res) {
   }
 });
 
-
 app.get("/editar-cliente/:id", function(req, res){
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
   Cliente.findById(req.params.id).then(function(docs){
       res.render("editar-cliente.ejs", { Cliente : docs});
   });
+
+  }catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
 });
 
 app.get("/editar-funcionario/:id", function(req, res){
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
   Usuario.findById(req.params.id).then(function(docs){
       res.render("editar-funcionario.ejs", { Usuario : docs});
   });
+
+  }catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
 });
 
 app.get("/sair", (req, res) => {
@@ -179,6 +199,13 @@ app.get("/sair", (req, res) => {
 });
 
 app.get('/deletar/:id', function(req, res){
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
   Chamado.findByIdAndDelete(req.params.id, function(err, docs){
       if(err){
           res.send("Aconteceu o seguinte erro: " + err);
@@ -186,9 +213,21 @@ app.get('/deletar/:id', function(req, res){
           res.redirect("/listar-chamados");
       };
   });
+
+  }catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
 });
 
 app.get('/deletar-cliente/:id', function(req, res){
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
   Cliente.findByIdAndDelete(req.params.id, function(err, docs){
       if(err){
           res.send("Aconteceu o seguinte erro: " + err);
@@ -196,9 +235,21 @@ app.get('/deletar-cliente/:id', function(req, res){
           res.redirect("/listar-clientes");
       };
   });
+
+  }catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
 });
 
 app.get('/deletar-funcionario/:id', function(req, res){
+  try {
+    const id_usuario = req.session.id_usuario;
+
+    if (!id_usuario) {
+      return res.redirect("/");
+    }
+
   Usuario.findByIdAndDelete(req.params.id, function(err, docs){
       if(err){
           res.send("Aconteceu o seguinte erro: " + err);
@@ -206,6 +257,11 @@ app.get('/deletar-funcionario/:id', function(req, res){
           res.redirect("/listar-funcionarios");
       };
   });
+
+  }catch (error) {
+    console.error("Erro: ", error);
+    res.status(500).send("Ocorreu um erro ao carregar os chamados.");
+  }
 });
 
 app.post("/chamados", async function (req, res) {
